@@ -1,31 +1,24 @@
 """Generate sales report showing total melons each salesperson sold."""
 
+#place all code within a function named generate_sales
+def generate_sales():
+    #Use context manager to handle opening/closing of the .txt file
+    with open('sales-report.txt') as current_file:
+        #Create an empty dictionary
+        employee_and_sales = {}
+        #For each line in the current_file rstrip and split on '|', and add employee name as key and melon's sold as value
+        for line in current_file:
+            line = line.rstrip()
+            entries = line.split('|')
+            #If employee does not exist as a key create the entry and set value to melon_count
+            if employee_and_sales.get(entries[0]) == None:
+                employee_and_sales[entries[0]] = employee_and_sales.get(entries[0], int(entries[2]))
+            else:
+            #If employee exists in the dictionary add new value to existing value in dictionary
+                employee_and_sales[entries[0]] = employee_and_sales[entries[0]] + int(entries[2])
+    #for each salesperson print their name and melons sold
+    for salesperson in employee_and_sales:
+        print(f'{salesperson} sold {employee_and_sales[salesperson]} melons')
 
-#Creates two empty lists (global variables) named 'salespeople' and 'melons_sold'
-salespeople = []
-melons_sold = []
 
-#opening 'sales-report.txt' and setting the opened file to var f
-f = open('sales-report.txt')
-
-#for each line in the .txt file, rstrip it and split it on '|' characters
-for line in f:
-    line = line.rstrip()
-    entries = line.split('|')
-    #set var salesperson equal to first element in the split line named entries
-    salesperson = entries[0]
-    #set var melons to third element and cast it as an integer
-    melons = int(entries[2])
-
-    #if the salesperson exists in the salespeople list grab the index of their location and increment the num of melons sold
-    if salesperson in salespeople:
-        position = salespeople.index(salesperson)
-        melons_sold[position] += melons
-    #if salesperson does not exist in salespeople list, add the salesperson and melons sold to the corresponding list
-    else:
-        salespeople.append(salesperson)
-        melons_sold.append(melons)
-
-#for each salesperson in salespeople print their name and melons sold
-for i in range(len(salespeople)):
-    print(f'{salespeople[i]} sold {melons_sold[i]} melons')
+generate_sales()
